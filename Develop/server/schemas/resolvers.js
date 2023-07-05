@@ -57,8 +57,19 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
           },
 
-          
+          saveBook: async (parent, { book }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: {savedBooks: book} },
+                    { new: true }
+                )
+                return updatedUser;
+            }
+            throw new AuthenticationError('You need to be logged in!')
+        },
 
-
-    }
+    },
 }
+
+modules.exports = resolvers;
