@@ -46,10 +46,10 @@ const defTypes = gql`
 
     
 
-    
-
 
 
 
 
 `;
+
+module.exports = defTypes;
