@@ -8,4 +8,8 @@ Installation guide: you will need to first need to clone to repo from the link b
 Once the server starts ruuning, it should automatically open up the browser. If it doesnt then open up you local browser and type http://localhost3000/.
 
 
+references: https://github.com/jcgom3/Challenge-21-MERN-Book-Search-Engine.git
+and class notes
+
+
 github repo link: - https://github.com/Walsh-Vaz/Book-Search-Engine.git
