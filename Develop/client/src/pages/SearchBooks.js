@@ -12,7 +12,7 @@ import Auth from '../utils/auth';
 import { useMutation } from '@apollo/client';
 import {SAVE_BOOK} from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
-import { saveBookIds, searchGoogleBooks } from '../utils/API';
+//import { saveBookIds, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
@@ -41,13 +41,17 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchGoogleBooks(searchInput);
+      
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${searchInput}`
+      );
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
       const { items } = await response.json();
+
 
       const bookData = items.map((book) => ({
         bookId: book.id,
@@ -56,6 +60,8 @@ const SearchBooks = () => {
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
+
+      console.log(`bookdate ${JSON.stringify(bookData)}`);
 
       setSearchedBooks(bookData);
       setSearchInput('');
@@ -68,6 +74,8 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
+
+    console.log( `bookId: ${bookId}` );
 
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -83,10 +91,7 @@ const SearchBooks = () => {
         //throw new Error('something went wrong!');
         await saveBook({
           variables: {book: bookToSave},
-          update: cache => {
-            const {me} = cache.readQuery({ query: GET_ME });
-            cache.writeQuery({ query: GET_ME , data: {me: { ...me, savedBooks: [...me.savedBooks, bookToSave] } } })
-          }
+
       });
 
       // if book successfully saves to user's account, save book id to state
