@@ -40,7 +40,7 @@ const resolvers = {
             return { token, user };
         },
 
-        removeThought: async (parent, { bookId }, context) => {
+        /*removeThought: async (parent, { bookId }, context) => {
             if (context.user) {
               const book = await Book.findOneAndDelete({
                 _id: bookId,
@@ -56,6 +56,7 @@ const resolvers = {
             }
             throw new AuthenticationError('You need to be logged in!');
           },
+          */
 
           saveBook: async (parent, { book }, context) => {
             if (context.user) {
@@ -72,4 +73,4 @@ const resolvers = {
     },
 }
 
-modules.exports = resolvers;
+module.exports = resolvers;

@@ -15,14 +15,14 @@ const tpyeDefs = gql`
         link: String
     }
 
-    type Mutations {
+    type Mutation {
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         saveBook(book: Books): User
         removeBook(bookId: String!): User
     }
 
-    type Book: {
+    type Book {
         description: String
         bookId: String
         image: String
@@ -31,7 +31,7 @@ const tpyeDefs = gql`
         authors: [String]
     }
 
-    type User: {
+    type User {
         _id: ID
         username: String
         savedBooks: [Book]
