@@ -40,23 +40,19 @@ const resolvers = {
             return { token, user };
         },
 
-        /*removeThought: async (parent, { bookId }, context) => {
-            if (context.user) {
-              const book = await Book.findOneAndDelete({
-                _id: bookId,
-                author: context.user.username,
-              });
-      
-              await User.findOneAndUpdate(
+        removeBook: async (parent, { bookId }, context) => {
+          if (context.user) {
+            const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id },
-                { $pull: { book: book._id } }
-              );
-      
-              return book;
-            }
-            throw new AuthenticationError('You need to be logged in!');
+                { $pull: {savedBooks: {bookId} }},
+                { new: true }
+            )
+            return updatedUser;
+        }
+        throw new AuthenticationError('You need to be logged in!')
+
           },
-          */
+          
 
           saveBook: async (parent, { book }, context) => {
             if (context.user) {
